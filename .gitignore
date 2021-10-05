@@ -1,0 +1,11 @@
+# class Path
+target
+
+# IDE setup
+/.DS_Store
+.settings
+.classpath
+.project
+
+.factorypath
+.DS_Store
