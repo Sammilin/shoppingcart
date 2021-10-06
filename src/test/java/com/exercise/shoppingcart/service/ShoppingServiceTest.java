@@ -19,8 +19,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.exercise.shoppingcart.dto.OrderItem;
 import com.exercise.shoppingcart.dto.ProductResponse;
@@ -32,7 +32,7 @@ import com.exercise.shoppingcart.repository.model.Product;
 import com.exercise.shoppingcart.repository.model.ShoppingOrder;
 
 @ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 public class ShoppingServiceTest {
 
 	private static final long ORDER_ITEM_ID2 = 10222L;
