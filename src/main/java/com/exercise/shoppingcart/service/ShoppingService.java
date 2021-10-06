@@ -11,6 +11,8 @@ import com.exercise.shoppingcart.dto.ProductResponse;
 public interface ShoppingService {
 	List<ProductResponse> getAllProducts();
 
+	ProductResponse getProductById(long productId);
+
 	long saveOrder(String recipient, String address, List<OrderItem> orderItems, long custId, double amount);
 
 	long saveOrder(String firstName, String lastName, String phone, String address, List<OrderItem> orderItems,

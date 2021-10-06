@@ -10,11 +10,13 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.exercise.shoppingcart.dto.OrderItem;
 import com.exercise.shoppingcart.dto.ProductResponse;
+import com.exercise.shoppingcart.exception.ShoppingServiceException;
 import com.exercise.shoppingcart.repository.CustomerRepository;
 import com.exercise.shoppingcart.repository.ProductRepository;
 import com.exercise.shoppingcart.repository.ShoppingOrderRepository;
@@ -59,7 +61,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 		ShoppingOrder order = setCreateOrder(recipient, address, orderItems, amount, customer);
 
 		if (Objects.isNull(order.id())) {
-			throw new RuntimeException("Save Order Fail");
+			throw new ShoppingServiceException("Order - Save Order Fail, missing OrderId");
 		} else {
 			return order.id();
 		}
@@ -75,7 +77,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 		ShoppingOrder order = setCreateOrder(firstName + " " + lastName, address, orderItems, amount, customer);
 
 		if (Objects.isNull(order.id())) {
-			throw new RuntimeException("Save Order Fail");
+			throw new ShoppingServiceException("Order - Save Order Fail, missing OrderId");
 		} else {
 			return order.id();
 		}
@@ -104,12 +106,24 @@ public class ShoppingServiceImpl implements ShoppingService {
 		productRepository.findById(productId).ifPresentOrElse(p -> {
 			item.product(p);
 		}, () -> {
-			// TODO: change by exception handler
-			throw new RuntimeException("Can't find product");
+			throw new ShoppingServiceException("Order - Can't find product");
 		});
 		item.quantity(quantity);
 		item.salePrice(salePrice);
 		return item;
+	}
+
+	@Override
+	public ProductResponse getProductById(long productId) {
+		Optional<Product> product = productRepository.findById(productId);
+
+		if (product.isPresent()) {
+			Product p = product.get();
+			return new ProductResponse(p.id(), p.name(), p.description(), p.price());
+
+		} else {
+			throw new ShoppingServiceException("Can't find product", HttpStatus.NOT_FOUND);
+		}
 	}
 
 }

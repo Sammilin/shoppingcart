@@ -43,7 +43,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 @SqlGroup({ @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:sql/before.sql") })
 //		@Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:sql/after.sql") })
-//@Sql(scripts = "classpath:sql/before.sql")
 public class ShoppingCarControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
@@ -105,6 +104,15 @@ public class ShoppingCarControllerTest {
 		}, () -> {
 			fail("New OrderId Not Found");
 		});
+
+	}
+
+	@Test
+	@Order(3)
+	void getProdcutById() throws Exception {
+
+		mockMvc.perform(get("/v1/api/products/{productId}", 100001).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.id", is(100001)));
 
 	}
 }
