@@ -1,0 +1,257 @@
+{
+	"info": {
+		"_postman_id": "73f5f07b-aed4-43c7-affb-8b710e8ee106",
+		"name": "ShoppingCart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get All Products",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/v1/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get All Products",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/v1/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"api",
+								"products"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 06 Oct 2021 14:05:34 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"products\": [\n        {\n            \"id\": 100004,\n            \"name\": \"product1\",\n            \"description\": \"Product1 detail\",\n            \"price\": 2\n        },\n        {\n            \"id\": 100005,\n            \"name\": \"product2\",\n            \"description\": \"Product2 detail\",\n            \"price\": 2.99\n        },\n        {\n            \"id\": 100006,\n            \"name\": \"product3\",\n            \"description\": \"Product3 detail\",\n            \"price\": 12.88\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "get Product By Id",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"pm.environment.set(\"productId\", \"100004\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/v1/api/products/{{productId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"api",
+						"products",
+						"{{productId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get Product By Id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/v1/api/products/{{productId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"api",
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 06 Oct 2021 15:08:01 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 100004,\n    \"name\": \"product1\",\n    \"description\": \"Product1 detail\",\n    \"price\": 2\n}"
+				}
+			]
+		},
+		{
+			"name": "POST order",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Katy\",\n    \"lastName\": \"Perry\",\n    \"phone\": \"(647)111-2133\",\n    \"shippingAddress\": \"California, USA\",\n    \"orderItems\": [\n        {\n            \"productId\": 100004,\n            \"salePrice\": 2.0,\n            \"quantity\": 1\n        },\n        {\n            \"productId\": 100005,\n            \"salePrice\": 1.25,\n            \"quantity\": 2\n        }\n    ],\n    \"custId\": 0,\n    \"amount\": 4.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/v1/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "POST order",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Sammi\",\n    \"lastName\": \"Wang\",\n    \"phone\": \"(647)111-2133\",\n    \"shippingAddress\": \"55 Queens Quay W, Toronto\",\n    \"orderItems\": [\n        {\n            \"productId\": 100004,\n            \"salePrice\": 2.0,\n            \"quantity\": 1\n        },\n        {\n            \"productId\": 100005,\n            \"salePrice\": 1.25,\n            \"quantity\": 2\n        }\n    ],\n    \"custId\": 0,\n    \"amount\": 4.5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"api",
+								"orders"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 06 Oct 2021 05:35:54 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"orderId\": 2,\n    \"message\": \"Success\"\n}"
+				}
+			]
+		}
+	]
+}
