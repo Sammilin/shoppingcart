@@ -5,11 +5,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.exercise.shoppingcart.dto.OrderItem;
 import com.exercise.shoppingcart.dto.ProductResponse;
@@ -45,6 +47,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 	}
 
 	@Override
+	@Transactional
 	public long saveOrder(String recipient, String address, List<OrderItem> orderItems, long custId, double amount) {
 		Customer customer = null;
 		Optional<Customer> existCustomer = customerRepository.findById(custId);
@@ -54,17 +57,28 @@ public class ShoppingServiceImpl implements ShoppingService {
 		}
 
 		ShoppingOrder order = setCreateOrder(recipient, address, orderItems, amount, customer);
-		return order.id();
+
+		if (Objects.isNull(order.id())) {
+			throw new RuntimeException("Save Order Fail");
+		} else {
+			return order.id();
+		}
 	}
 
 	@Override
+	@Transactional
 	public long saveOrder(String firstName, String lastName, String phone, String address, List<OrderItem> orderItems,
 			double amount) {
 
 		Customer customer = customerRepository.save(new Customer(firstName, lastName, null, phone, address));
 
 		ShoppingOrder order = setCreateOrder(firstName + " " + lastName, address, orderItems, amount, customer);
-		return order.id();
+
+		if (Objects.isNull(order.id())) {
+			throw new RuntimeException("Save Order Fail");
+		} else {
+			return order.id();
+		}
 	}
 
 	private ShoppingOrder setCreateOrder(String recipient, String address, List<OrderItem> orderItems, double amount,
@@ -81,8 +95,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 			order.customer(customer);
 		}
 		order.amount(amount);
-		shoppingOrderRepository.save(order);
-		return order;
+		return shoppingOrderRepository.save(order);
 	}
 
 	private ShoppingOrderItem setOrderItem(long productId, int quantity, double salePrice) {
