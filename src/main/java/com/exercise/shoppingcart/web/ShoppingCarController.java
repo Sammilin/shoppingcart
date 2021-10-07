@@ -32,7 +32,7 @@ public class ShoppingCarController {
 	}
 
 	@GetMapping("/products/{productId}")
-	public ProductResponse getProducts(@PathVariable(value = "productId", required = true) String id) {
+	public ProductResponse getProduct(@PathVariable(value = "productId", required = true) String id) {
 
 		return shoppingService.getProductById(Long.valueOf(id));
 	}
