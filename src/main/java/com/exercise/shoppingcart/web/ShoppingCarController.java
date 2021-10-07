@@ -18,6 +18,8 @@ import com.exercise.shoppingcart.web.model.GetAllProductisResponse;
 import com.exercise.shoppingcart.web.model.ShoppingOrderRequest;
 import com.exercise.shoppingcart.web.model.ShoppingOrderResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/v1/api")
 public class ShoppingCarController {
@@ -26,18 +28,21 @@ public class ShoppingCarController {
 	ShoppingService shoppingService;
 
 	@GetMapping("/products")
+	@Operation(summary = "Get all products information")
 	public GetAllProductisResponse getProducts() {
 
 		return new GetAllProductisResponse(shoppingService.getAllProducts());
 	}
 
 	@GetMapping("/products/{productId}")
-	public ProductResponse getProduct(@PathVariable(value = "productId", required = true) String id) {
+	@Operation(summary = "Get a product by product id")
+	public ProductResponse getProduct(@PathVariable(value = "productId", required = true) long id) {
 
 		return shoppingService.getProductById(Long.valueOf(id));
 	}
 
 	@PostMapping("/orders")
+	@Operation(summary = "Save order information")
 	public ShoppingOrderResponse createOrder(@Valid @RequestBody ShoppingOrderRequest shoppingOrderRequest) {
 
 		long orderId;
