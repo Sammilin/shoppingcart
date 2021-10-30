@@ -24,6 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.exercise.shoppingcart.dto.OrderItem;
 import com.exercise.shoppingcart.dto.ProductResponse;
+import com.exercise.shoppingcart.exception.ShoppingServiceException;
 import com.exercise.shoppingcart.repository.CustomerRepository;
 import com.exercise.shoppingcart.repository.ProductRepository;
 import com.exercise.shoppingcart.repository.ShoppingOrderRepository;
@@ -133,7 +134,7 @@ public class ShoppingServiceTest {
 		Customer customer = new Customer(custId, "a", "b", "ab", "123123123", "123 St.");
 		when(customerRepository.findById(eq(custId))).thenReturn(Optional.of(customer));
 
-		Assertions.assertThrows(RuntimeException.class, () -> {
+		Assertions.assertThrows(ShoppingServiceException.class, () -> {
 			shoppingService.saveOrder("Joe Linch", "abc St", setOrderItems(), custId, amount);
 		});
 
@@ -151,7 +152,7 @@ public class ShoppingServiceTest {
 
 		when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
-		Assertions.assertThrows(RuntimeException.class, () -> {
+		Assertions.assertThrows(ShoppingServiceException.class, () -> {
 			shoppingService.saveOrder("Joe", "Week", "123123123", "123 St.", setOrderItems(), requestAmount);
 		});
 

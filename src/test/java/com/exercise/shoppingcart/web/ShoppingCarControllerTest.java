@@ -35,6 +35,7 @@ import com.exercise.shoppingcart.repository.ShoppingOrderRepository;
 import com.exercise.shoppingcart.repository.model.Product;
 import com.exercise.shoppingcart.web.model.ShoppingOrderRequest;
 import com.exercise.shoppingcart.web.model.ShoppingOrderResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ActiveProfiles("test")
@@ -113,6 +114,23 @@ public class ShoppingCarControllerTest {
 
 		mockMvc.perform(get("/v1/api/products/{productId}", 100001).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.id", is(100001)));
+
+	}
+
+	@Test
+	void createOrderFailByNonExistingProduct() throws JsonProcessingException, Exception {
+
+		List<OrderItem> orderItems = Arrays.asList(new OrderItem(1L, 2.44, 1), new OrderItem(2L, 1.25, 2));
+
+		double amount = orderItems.stream().mapToDouble(o -> o.getQuantity() * o.getSalePrice()).sum();
+
+		ShoppingOrderRequest request = new ShoppingOrderRequest("Allen", "Wang", "(647)111-2133",
+				"55 Queens Quay W, Toronto", orderItems, 0, amount);
+
+		mockMvc.perform(post("/v1/api/orders").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request))).andDo(print())
+				.andExpect(status().is5xxServerError())
+				.andExpect(jsonPath("$.message", is("Order - Can't find product")));
 
 	}
 }
